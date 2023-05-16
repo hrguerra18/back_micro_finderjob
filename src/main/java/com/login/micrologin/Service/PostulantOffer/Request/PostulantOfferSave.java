@@ -1,6 +1,5 @@
-package com.login.micrologin.Service.Offer.Request;
+package com.login.micrologin.Service.PostulantOffer.Request;
 
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChangeStateOffert {
+public class PostulantOfferSave {
     private Long idOffer;
-    private int idState;
+    private Long idPostulant;
 }

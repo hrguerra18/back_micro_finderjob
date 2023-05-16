@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface ICompanyService {
     ServiceCompanyResponse getAll();
-    Optional<Company> findById(Long id);
+    ServiceCompanyResponse findById(Long id);
     ServiceCompanyResponse save(Company company);
-    Company update(Company company);
+    ServiceCompanyResponse update(Company company);
     void delete(Long id);
 
 }

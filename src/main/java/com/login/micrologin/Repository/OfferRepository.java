@@ -11,4 +11,11 @@ import java.util.List;
 public interface OfferRepository extends JpaRepository<Offers, Long> {
     @Query(value = "SELECT * FROM offers WHERE ofe_company_id= :CompanyId", nativeQuery = true)
     List<Offers> findAllByCompanyId(Long CompanyId);
+
+    @Query(value = "SELECT * FROM offers  WHERE ofe_state = :stateId", nativeQuery = true)
+    List<Offers> findAllByState(int stateId);
+
+
+
+
 }

@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -33,8 +37,14 @@ public class Postulant {
     private String address;
     @Column(name = "POS_PHONE")
     private String phone;
-
+    @Column(name = "POS_GENDER")
+    private String gender;
+    @Column(name = "POS_AGE")
+    private int age;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "POS_USER_ID")
     private User userBE;
+    @OneToMany(mappedBy = "postulant")
+    private List<PostulantOffer> lstPostulantOffer;
+
 }

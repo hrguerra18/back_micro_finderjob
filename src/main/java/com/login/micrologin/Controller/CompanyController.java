@@ -22,7 +22,7 @@ public class CompanyController {
         return companyService.getAll();
     }
     @GetMapping("/{id}")
-    public Optional<Company> findById(@PathVariable("id") Long id) {
+    public ServiceCompanyResponse findById(@PathVariable("id") Long id) {
         return companyService.findById(id);
     }
     @PostMapping
@@ -31,7 +31,7 @@ public class CompanyController {
     }
 
     @PutMapping
-    public Company update(@RequestBody Company company) {
+    public ServiceCompanyResponse update(@RequestBody Company company) {
         return companyService.update(company);
     }
 

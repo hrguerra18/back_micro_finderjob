@@ -1,6 +1,7 @@
 package com.login.micrologin.Service.Company;
 
 import com.login.micrologin.Entity.Company;
+import com.login.micrologin.Entity.Offers;
 import com.login.micrologin.Entity.User;
 import com.login.micrologin.Entity.Enum.UserType;
 import com.login.micrologin.Interface.IService.ICompanyService;
@@ -30,18 +31,28 @@ public class ServiceCompany implements ICompanyService {
             response.messagge = "No se encuentra registros de empresas!!";
         } else {
             lstCompany.forEach(x -> {
-                User user = x.getUserBE();
-                if ( user != null){
-                    user.setCompany(null);
-                }
+                x.setUserBE(null);
+                x.setLstOffers(null);
             });
             response.lstCompany = lstCompany;
         }
         return response;
     }
     @Override
-    public Optional<Company> findById(Long id) {
-        return _companyRepository.findById(id);
+    public ServiceCompanyResponse findById(Long id) {
+        Company company = findCompanyById(id);
+        ServiceCompanyResponse response = new ServiceCompanyResponse();
+        if (company != null){
+            company.getUserBE().setCompany(null);
+            if (!company.getLstOffers().isEmpty()){
+               company.setLstOffers(null);
+            }
+            response.company = company;
+            response.messagge = "Se ha encontrado la empresa";
+        }else{
+            response.messagge = "No existe una empresa con ese ID";
+        }
+        return response;
     }
 
     @Override
@@ -69,12 +80,45 @@ public class ServiceCompany implements ICompanyService {
     }
 
     @Override
-    public Company update(Company company) {
-        return _companyRepository.save(company);
+    public ServiceCompanyResponse update(Company companyRequest) {
+        ServiceCompanyResponse response = new ServiceCompanyResponse();
+        Company company = findCompanyById(companyRequest.getId());
+        if (company != null){
+            company = mapCompany(companyRequest, company);
+            _companyRepository.save(company);
+            company.setUserBE(null);
+            company.setLstOffers(null);
+            response.company = company;
+        }else{
+            response.messagge = "No se encontro la empresa que desea modificar.";
+        }
+        return response;
     }
 
     @Override
     public void delete(Long id) {
         _companyRepository.deleteById(id);
+    }
+
+    private Company findCompanyById(Long id){
+        if (id > 0){
+            Company companyResponse = new Company();
+            Optional<Company> companyOptional = _companyRepository.findById(id);
+            if (!companyOptional.isEmpty()){
+                return companyOptional.get();
+            }else{
+                return null;
+            }
+        }
+        return null;
+    }
+
+    private Company mapCompany(Company companyRequest, Company companyResponse){
+        companyResponse.setName(companyRequest.getName());
+        companyResponse.setDescription(companyRequest.getDescription());
+        companyResponse.setNit(companyRequest.getNit());
+        companyResponse.setAddress(companyRequest.getAddress());
+        companyResponse.setPhone(companyRequest.getPhone());
+        return companyResponse;
     }
 }

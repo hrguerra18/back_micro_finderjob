@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -47,8 +48,12 @@ public class Offers {
     @Column(name = "OFE_STATE")
 
     private int state;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "OFE_COMPANY_ID")
     private Company company;
+    @OneToMany(mappedBy = "offert")
+    private List<PostulantOffer> lstPostulantOffer;
+
+
 
 }
