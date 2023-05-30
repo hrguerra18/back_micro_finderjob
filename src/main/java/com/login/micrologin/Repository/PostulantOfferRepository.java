@@ -21,5 +21,12 @@ public interface PostulantOfferRepository extends JpaRepository<PostulantOffer, 
     @Query(value = "DELETE FROM postulant_offert WHERE pof_offert_id = :offerId AND pof_postulant_id = :postulantId",nativeQuery = true)
     void deletePostulantOfferByPostulant(@Param("offerId")Long offerId, @Param("postulantId")Long postulantId);
 
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE postulant_offert SET pof_state = :stateId  WHERE pof_postulant_offert_id = :postulantOfferId",nativeQuery = true)
+    int changeState(@Param("postulantOfferId")Long postulantOfferId, @Param("stateId")int stateId);
+
+    @Query(value = "SELECT * FROM postulant_offert WHERE pof_postulant_id = :postulantId AND pof_state = :stateId", nativeQuery = true)
+    List<PostulantOffer> finAllByStateAndPostulant(@Param("postulantId") Long postulantId, @Param("stateId")int stateId);
 
 }
